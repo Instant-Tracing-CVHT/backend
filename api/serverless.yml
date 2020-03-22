@@ -27,6 +27,14 @@ functions:
           method: get
           integration: lambda-proxy
 
+vpc:
+  securityGroupIds:
+    - sg-6ea29c08
+  subnetIds:
+    - subnet-ff7dedb3
+    - subnet-26ff0d4d
+    - subnet-76153d0c
+
 package:
   exclude:
     - "**/*"
