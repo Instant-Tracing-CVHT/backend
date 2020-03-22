@@ -12,9 +12,13 @@ create table if not exists contact_tracer.device (
 	infected_date timestamp null
 );
 
+drop table contact_tracer.device_location;
 create table if not exists contact_tracer.device_location (
 		device_id varchar not null references contact_tracer.device(device_id),
 		sample_date timestamp,
-		location Point,
+		location geometry,
 		accuracy float
 );
+
+create index location_device_time on contact_tracer.device_location(device_id,sample_date);
+create index location_location on contact_tracer.device_location using gist(location);
