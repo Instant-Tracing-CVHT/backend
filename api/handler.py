@@ -68,9 +68,11 @@ def postInfected(event, context):
     print(f"processing infected {event}")
     conn = make_conn()
     cursor = conn.cursor()
+    infectionDate = event['body']['infectionDate']
+    infectedDeviceId = event['body']['deviceId']
     # set the user to infected
     cursor.execute(
-        f"update contact_tracer.device set infected = true, infected_date = '{event['infectionDate']}' where device_id = '{event['deviceId']}'; ")
+        f"update contact_tracer.device set infected = true, infected_date = '{infectionDate}' where device_id = '{infectedDeviceId}'; ")
     # get all devices that need to be notified
     deviceIdsToNotify = getDevicesExposed(event['deviceId'],cursor)
     print(f"the following devices need to be notified : {deviceIdsToNotify}")
@@ -79,7 +81,7 @@ def postInfected(event, context):
         notifyDevice(deviceId, i18n.t("wording.infected-notification-title"), i18n.t("wording.infected-notification-body"))
 
     cursor.execute(
-        f"update contact_tracer.device set notification_sent = true where device_id = '{event['deviceId']}'; ")
+        f"update contact_tracer.device set notification_sent = true where device_id = '{infectedDeviceId}'; ")
     # get all devices that need to be notified
 
     body = {
@@ -90,22 +92,10 @@ def postInfected(event, context):
 
     return response
 
-
-def getDevicesNearInfected(event, context):
-    body = {
-        "message": "GET /devices-near-infected endpoint logic! Your function executed successfully!",
-        "input": event,
-    }
-
-    response = {"statusCode": 200, "body": json.dumps(body)}
-
-    return response
-
-
 def getDeviceRisk(event, context):
     conn = make_conn()
     cursor = conn.cursor()
-    deviceId = event['deviceId']
+    deviceId = event['body']['deviceId']
     body = {
         "deviceId": deviceId,
         "score": getLatestDeviceScore(deviceId, cursor)
