@@ -1,7 +1,7 @@
 service: wetrace-api
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.7
   stage: dev
   region: us-east-2
 functions:
@@ -29,7 +29,7 @@ functions:
 
 vpc:
   securityGroupIds:
-    - sg-6ea29c08
+    - sg-03b5282aa8bd76a92
   subnetIds:
     - subnet-ff7dedb3
     - subnet-26ff0d4d

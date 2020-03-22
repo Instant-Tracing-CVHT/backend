@@ -30,7 +30,7 @@ def postLocation(event, context):
     cursor = conn.cursor()
     cursor.execute("SELECT datname from pg_database;")
     raw = cursor.fetchall()
-    response = json.dumps(raw)
+    response = {"statusCode": 200, "body": json.dumps(raw)}
     return response
 
 
