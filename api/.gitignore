@@ -21,3 +21,8 @@ var/
 
 # Serverless dependencies
 api/node_modules/
+
+# Config files for env vars
+config/config.dev.yaml
+config/config.sit.yaml
+config/config.prod.yaml

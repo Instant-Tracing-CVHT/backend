@@ -4,6 +4,13 @@ provider:
   runtime: python3.7
   stage: dev
   region: us-east-2
+  environment:
+    DB_HOST: ${file(config/config.${self:provider.stage}.yaml):DB_HOST}
+    DB_PORT: ${file(config/config.${self:provider.stage}.yaml):DB_PORT}
+    DB_NAME: ${file(config/config.${self:provider.stage}.yaml):DB_NAME}
+    DB_USER: ${file(config/config.${self:provider.stage}.yaml):DB_USER}
+    DB_PASS: ${file(config/config.${self:provider.stage}.yaml):DB_PASS}
+
 functions:
   postLocation:
     handler: handler.postLocation

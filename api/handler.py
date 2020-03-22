@@ -1,11 +1,12 @@
 import json
+import os
 import psycopg2
 
-DB_HOST = "db_host"
-DB_PORT = "db_port"
-DB_NAME = "db_name"
-DB_USER = "db_user"
-DB_PASS = "db_pass"
+DB_HOST = os.environ["DB_HOST"]
+DB_PORT = os.environ["DB_PORT"]
+DB_NAME = os.environ["DB_NAME"]
+DB_USER = os.environ["DB_USER"]
+DB_PASS = os.environ["DB_PASS"]
 
 
 def make_conn():
