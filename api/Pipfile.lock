@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2c8370c3194bb7697f012d8556e2143674b6d29694557815fabb4a92fb1360ba"
+            "sha256": "773b30233ee6eac8454fcbcd1bde74d1bb86152d5ca4aadc55870ce57de5e740"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,14 +16,6 @@
         ]
     },
     "default": {
-        "postgis": {
-            "hashes": [
-                "sha256:1dfa62d33c585d68a54bdd47c21bdcb9302f9cbb0ef5aec360e64d2c3e0e1a93",
-                "sha256:3d41f087e249a2a8b6720931e6f8f22b7747801f250265a8b8ac5f9d48221e63"
-            ],
-            "index": "pypi",
-            "version": "==1.0.4"
-        },
         "psycopg2-binary": {
             "hashes": [
                 "sha256:040234f8a4a8dfd692662a8308d78f63f31a97e1c42d2480e5e6810c48966a29",
