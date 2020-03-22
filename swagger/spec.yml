@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: API for Contact Tracer (End Covid19) 
-  version: 1.0.0
+  version: "1.0.0"
   title: API for Contact Tracer (End Covid19)
   # put the contact info for your development or API team
   contact:
@@ -67,11 +67,40 @@ paths:
           description: infection acknowledged
         400:
           description: invalid input, object invalid
-  /devices-near-infected:
+  /device-risk:
     get:
       tags:
       - notifications
-      summary: calculates and returns the list of devices that were near an infected user's device for an actionable amount of time
+      summary: returns the risk calculated for this device (not real-time calculated)
+      operationId: getDeviceScore
+      description: |
+        Consult project documentation for further details
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: usedDeviceId
+        type: string
+        description: user's deviceId
+      responses:
+        200:
+          description: ok
+          schema:
+            type: object
+            properties:
+              deviceId:
+                type: string
+                description: the deviceId
+              score:
+                type: number
+                description: The device score (1/2/3).
+        400:
+          description: invalid user deviceId          
+  /device-points:
+    get:
+      tags:
+      - notifications
+      summary: calculates and returns the list of devices `infected` that were near an user's device for an actionable amount of time
       operationId: getDevicesNearInfected
       description: |
         Consult project documentation for further details
@@ -79,9 +108,9 @@ paths:
       - application/json
       parameters:
       - in: query
-        name: infectedUserDeviceId
+        name: usedDeviceId
         type: string
-        description: infected user's deviceId
+        description: user's deviceId
       responses:
         200:
           description: infection acknowledged

@@ -1,6 +1,8 @@
 {
   "en": {
-    "infected-notification-title": "Hey you \u1f60d",
-    "infected-notification-body": "within the last two weeks, you were near a person who declared covid19. They care about you and yours & let you know, so you can do your best to stop the spread :gift_heart:"
+    "infected-notification-title": "Hey you \uD83D\uDE0D",
+    "infected-notification-body": "within the last two weeks, you were near a person who has contracted covid19",
+    "score-changed-title" : "Hey you \uD83D\uDE0D",
+    "score-changed-body" : "Your risk score has been updated"
   }
 }
