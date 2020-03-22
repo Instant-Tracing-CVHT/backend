@@ -1,7 +1,7 @@
 service: wetrace-api
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
   stage: dev
   region: us-east-2
 functions:
@@ -26,3 +26,12 @@ functions:
           path: /devices-near-infected
           method: get
           integration: lambda-proxy
+
+package:
+  exclude:
+    - "**/*"
+
+  # include - we have to explicitly list packages with native dependencies.
+  include:
+    - "*.py"
+    - "json"
