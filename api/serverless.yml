@@ -26,13 +26,18 @@ functions:
           path: /infected
           method: post
           integration: lambda-proxy
-  getDevicesNearInfected:
-    handler: handler.getDevicesNearInfected
+  getDeviceRisk:
+    handler: handler.getDeviceRisk
     events:
       - http:
-          path: /devices-near-infected
+          path: /device-risk
           method: get
           integration: lambda-proxy
+  calculateRiskScores:
+    handler: handler.calculatRiskScores
+    events:
+      - schedule: rate(5 minutes)
+
 
 vpc:
   securityGroupIds:
