@@ -52,7 +52,6 @@ package:
     - "*.py"
     - "json"
     - "psycopg2-binary"
-    - "postgis"
 
 plugins:
   - serverless-python-requirements
