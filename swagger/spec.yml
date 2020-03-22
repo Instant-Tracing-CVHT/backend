@@ -1,0 +1,132 @@
+swagger: '2.0'
+info:
+  description: API for Contact Tracer (End Covid19) 
+  version: 1.0.0
+  title: API for Contact Tracer (End Covid19)
+  # put the contact info for your development or API team
+  contact:
+    email: "contact@nowhere.com"
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: data ingestion
+  description: Intended for device data ingestion
+- name: notifications
+  description: Intended for managing user notifications
+
+paths:
+  /location:
+    post:
+      tags:
+      - data ingestion
+      summary: send a new device location
+      operationId: sendLocation
+      description: |
+        send an updated device location 
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deviceLocation
+        description: Device location item to add
+        schema:
+          $ref: '#/definitions/DeviceLocation'
+      responses:
+        200:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+  /infected:
+    post:
+      tags:
+      - data ingestion
+      summary: signal the user of this device is infected
+      operationId: signalInfected
+      description: |
+        Signal the user of this device is infected 
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deviceUserInfected
+        description: user device infected
+        schema:
+          $ref: '#/definitions/UserDeviceInfected'
+      responses:
+        200:
+          description: infection acknowledged
+        400:
+          description: invalid input, object invalid
+  /devices-near-infected:
+    get:
+      tags:
+      - notifications
+      summary: calculates and returns the list of devices that were near an infected user's device for an actionable amount of time
+      operationId: getDevicesNearInfected
+      description: |
+        Consult project documentation for further details
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: infectedUserDeviceId
+        type: string
+        description: infected user's deviceId
+      responses:
+        200:
+          description: infection acknowledged
+        400:
+          description: invalid user deviceId
+definitions:
+  DeviceLocation:
+    type: object
+    required:
+    - deviceId
+    - sampleDate
+    - latitude
+    - longitude
+    properties:
+      deviceId:
+        type: string
+        example: "28:6c:f8:7d:fc:92"
+      sampleDate:
+        type: string
+        format: date-time
+        example: "2016-08-29T09:12:33.001Z"
+      latitude:
+        type: number
+        example: 29.750038
+      longitude:
+        type: number
+        example: -95.396599
+      accuracy:
+        type: number
+        example: 0.05
+  UserDeviceInfected:
+    type: object
+    required:
+    - deviceId
+    - infectionDate
+    properties:
+      deviceId:
+        type: string
+        example: "28:6c:f8:7d:fc:92"
+      infectionDate:
+        type: string
+        format: date-time
+        example: "2016-08-29T09:12:33.001Z"
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /cyterdan/contact-tracer/1.0.0
+schemes:
+ - https
