@@ -20,7 +20,6 @@ INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALU
 
 
 
-
 CREATE FUNCTION abs(interval) RETURNS interval AS
   $$ select case when ($1<interval '0') then -$1 else $1 end; $$
 LANGUAGE sql immutable;
@@ -30,7 +29,14 @@ LANGUAGE sql immutable;
 
 
 select ST_DistanceSphere(ST_MakePoint(37.842245, -122.261125),ST_MakePoint(37.842012, -122.261388))
-;
+
+
+
+select device_id from contact_tracer.device order by latest_sample desc;
+select score from contact_tracer.device_risk where device_id = 'device1';
+
+insert into contact_tracer.device_risk(device_id ,score ,last_calculated ) values
+('device1',2,now()) on conflict(device_id) do update set score =EXCLUDED.score, last_calculated = EXCLUDED.last_calculated;
 
 
 select distinct dl3.device_id as notifyDeviceId

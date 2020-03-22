@@ -54,7 +54,7 @@ def getDevicesExposed(deviceId,cursor) :
         contact_tracer.device_location dl 
         join lateral 
         (
-            select * from contact_tracer.device_location where device_id != dl.device_id and ST_DistanceSphere(location,dl.location) < 10
+            select * from contact_tracer.device_location where device_id != dl.device_id and postgis.ST_DistanceSphere(location,dl.location) < 10
             and abs(dl.sample_date - sample_date) <= interval '1 hour'
             ) dl3 on true 
             where dl.device_id  = '{deviceId}'
