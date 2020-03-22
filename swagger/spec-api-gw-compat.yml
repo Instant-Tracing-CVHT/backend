@@ -1,7 +1,7 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: API for Contact Tracer (End Covid19)
-  version: 1.0.0
+  description: API for Contact Tracer (End Covid19) 
+  version: "1.0.0"
   title: API for Contact Tracer (End Covid19)
   # put the contact info for your development or API team
   contact:
@@ -13,30 +13,30 @@ info:
 
 # tags are used for organizing operations
 tags:
-  - name: data ingestion
-    description: Intended for device data ingestion
-  - name: notifications
-    description: Intended for managing user notifications
+- name: data ingestion
+  description: Intended for device data ingestion
+- name: notifications
+  description: Intended for managing user notifications
 
 paths:
   /location:
     post:
       tags:
-        - data ingestion
+      - data ingestion
       summary: send a new device location
       operationId: sendLocation
       description: |
-        send an updated device location
+        send an updated device location 
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: deviceLocation
-          description: Device location item to add
-          schema:
-            $ref: "#/definitions/DeviceLocation"
+      - in: body
+        name: deviceLocation
+        description: Device location item to add
+        schema:
+          $ref: '#/definitions/DeviceLocation'
       responses:
         200:
           description: item created
@@ -47,41 +47,70 @@ paths:
   /infected:
     post:
       tags:
-        - data ingestion
+      - data ingestion
       summary: signal the user of this device is infected
       operationId: signalInfected
       description: |
-        Signal the user of this device is infected
+        Signal the user of this device is infected 
       consumes:
-        - application/json
+      - application/json
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: body
-          name: deviceUserInfected
-          description: user device infected
-          schema:
-            $ref: "#/definitions/UserDeviceInfected"
+      - in: body
+        name: deviceUserInfected
+        description: user device infected
+        schema:
+          $ref: '#/definitions/UserDeviceInfected'
       responses:
         200:
           description: infection acknowledged
         400:
           description: invalid input, object invalid
-  /devices-near-infected:
+  /device-risk:
     get:
       tags:
-        - notifications
-      summary: calculates and returns the list of devices that were near an infected user's device for an actionable amount of time
+      - notifications
+      summary: returns the risk calculated for this device (not real-time calculated)
+      operationId: getDeviceScore
+      description: |
+        Consult project documentation for further details
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: usedDeviceId
+        type: string
+        description: user's deviceId
+      responses:
+        200:
+          description: ok
+          schema:
+            type: object
+            properties:
+              deviceId:
+                type: string
+                description: the deviceId
+              score:
+                type: number
+                description: The device score (1/2/3).
+        400:
+          description: invalid user deviceId          
+  /device-points:
+    get:
+      tags:
+      - notifications
+      summary: calculates and returns the list of devices `infected` that were near an user's device for an actionable amount of time
       operationId: getDevicesNearInfected
       description: |
         Consult project documentation for further details
       produces:
-        - application/json
+      - application/json
       parameters:
-        - in: query
-          name: infectedUserDeviceId
-          type: string
-          description: infected user's deviceId
+      - in: query
+        name: usedDeviceId
+        type: string
+        description: user's deviceId
       responses:
         200:
           description: infection acknowledged
@@ -91,10 +120,10 @@ definitions:
   DeviceLocation:
     type: object
     required:
-      - deviceId
-      - sampleDate
-      - latitude
-      - longitude
+    - deviceId
+    - sampleDate
+    - latitude
+    - longitude
     properties:
       deviceId:
         type: string
@@ -110,8 +139,8 @@ definitions:
   UserDeviceInfected:
     type: object
     required:
-      - deviceId
-      - infectionDate
+    - deviceId
+    - infectionDate
     properties:
       deviceId:
         type: string
@@ -122,4 +151,4 @@ definitions:
 host: virtserver.swaggerhub.com
 basePath: /cyterdan/contact-tracer/1.0.0
 schemes:
-  - https
+ - https
