@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "serverless-import-swagger": "^0.2.2",
-    "serverless_swagger": "^1.0.3"
+    "serverless-python-requirements": "^5.1.0"
   },
   "devDependencies": {},
   "scripts": {

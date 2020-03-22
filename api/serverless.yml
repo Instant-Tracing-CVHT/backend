@@ -43,3 +43,6 @@ package:
   include:
     - "*.py"
     - "json"
+
+plugins:
+  - serverless-python-requirements
