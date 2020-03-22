@@ -2,10 +2,21 @@
 
 ## Requirements
 
-- `serverless` framework
-- `serverless-import-swagger` plugin
+### Install `serverless` framework
+
+    sudo npm install -g serverless
+
+### `serverless-import-swagger` and other plugins
+
+Within the project folder
+
+    npm install
 
 ## Usage
+
+### Obtain config files for env vars
+
+Place `config.dev.yaml` within the `config/` folder
 
 ### Deploy stack
 
