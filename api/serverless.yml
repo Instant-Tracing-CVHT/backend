@@ -43,6 +43,7 @@ package:
   include:
     - "*.py"
     - "json"
+    - "psycopg2-binary"
 
 plugins:
   - serverless-python-requirements
