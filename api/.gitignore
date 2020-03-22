@@ -26,3 +26,6 @@ api/node_modules/
 config/config.dev.yaml
 config/config.sit.yaml
 config/config.prod.yaml
+/.idea/
+/venv/
+/setuptools-33.1.1.zip
