@@ -4,6 +4,13 @@ provider:
   runtime: python3.7
   stage: dev
   region: us-east-2
+  environment:
+    DB_HOST: ${file(config/config.${self:provider.stage}.yaml):DB_HOST}
+    DB_PORT: ${file(config/config.${self:provider.stage}.yaml):DB_PORT}
+    DB_NAME: ${file(config/config.${self:provider.stage}.yaml):DB_NAME}
+    DB_USER: ${file(config/config.${self:provider.stage}.yaml):DB_USER}
+    DB_PASS: ${file(config/config.${self:provider.stage}.yaml):DB_PASS}
+
 functions:
   postLocation:
     handler: handler.postLocation
@@ -26,3 +33,24 @@ functions:
           path: /devices-near-infected
           method: get
           integration: lambda-proxy
+
+vpc:
+  securityGroupIds:
+    - sg-03b5282aa8bd76a92
+  subnetIds:
+    - subnet-ff7dedb3
+    - subnet-26ff0d4d
+    - subnet-76153d0c
+
+package:
+  exclude:
+    - "**/*"
+
+  # include - we have to explicitly list packages with native dependencies.
+  include:
+    - "*.py"
+    - "json"
+    - "psycopg2-binary"
+
+plugins:
+  - serverless-python-requirements
