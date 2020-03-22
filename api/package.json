@@ -1,0 +1,16 @@
+{
+  "name": "wetrace-api",
+  "version": "0.0.1",
+  "description": "weTrace End Coronavirus hackathon",
+  "main": "index.js",
+  "dependencies": {
+    "serverless-import-swagger": "^0.2.2",
+    "serverless_swagger": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}

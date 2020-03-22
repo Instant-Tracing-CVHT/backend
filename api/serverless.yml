@@ -1,0 +1,28 @@
+service: wetrace-api
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: us-east-2
+functions:
+  postLocation:
+    handler: handler.postLocation
+    events:
+      - http:
+          path: /location
+          method: post
+          integration: lambda-proxy
+  postInfected:
+    handler: handler.postInfected
+    events:
+      - http:
+          path: /infected
+          method: post
+          integration: lambda-proxy
+  getDevicesNearInfected:
+    handler: handler.getDevicesNearInfected
+    events:
+      - http:
+          path: /devices-near-infected
+          method: get
+          integration: lambda-proxy
