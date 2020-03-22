@@ -23,10 +23,17 @@ def make_conn():
 
 def postLocation(event, context):
     payload = json.loads(event["body"])
-    point_str = f"'POINT({payload['longitude']} {payload['latitude']})'"
-    sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{payload['deviceId']}', '{payload['sampleDate']}', postgis.ST_PointFromText({point_str}))"
+    device_id = payload["deviceId"]
+    sample_date = payload["sampleDate"]
     conn = make_conn()
     cursor = conn.cursor()
+    # upsert on device table
+    sql_statement = f"INSERT INTO contact_tracer.device (device_id, first_sample, latest_sample) VALUES ('{device_id}', '{sample_date}', '{sample_date}) ON CONFLICT (deviceId) DO UPDATE SET latest_sample = '{sample_date}' WHERE deviceId='{device_id}'"
+    print(sql_statement)
+    cursor.execute(sql_statement)
+    # insert into device_location_table
+    point_str = f"'POINT({payload['longitude']} {payload['latitude']})'"
+    sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{device_id}', '{sample_date}', postgis.ST_PointFromText({point_str}))"
     cursor.execute(sql_statement)
     conn.commit()
     response = {"statusCode": 200}
