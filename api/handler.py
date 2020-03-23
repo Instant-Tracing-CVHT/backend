@@ -33,6 +33,7 @@ def make_conn():
         )
     except:
         print("I'm unable to connect to the database")
+        raise psycopg2.DatabaseError
     return conn
 
 
@@ -40,17 +41,26 @@ def postLocation(event, context):
     payload = json.loads(event["body"])
     device_id = payload["deviceId"]
     sample_date = payload["sampleDate"]
-    conn = make_conn()
-    cursor = conn.cursor()
-    # upsert on device table
-    sql_statement = f"INSERT INTO contact_tracer.device (device_id, first_sample, latest_sample) VALUES ('{device_id}', '{sample_date}', '{sample_date}') ON CONFLICT (device_id) DO UPDATE SET latest_sample = '{sample_date}' WHERE device.device_id='{device_id}'"
-    cursor.execute(sql_statement)
-    # insert into device_location_table
-    point_str = f"'POINT({payload['longitude']} {payload['latitude']})'"
-    sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{device_id}', '{sample_date}', postgis.ST_PointFromText({point_str}))"
-    cursor.execute(sql_statement)
-    conn.commit()
-    response = {"statusCode": 200}
+    try:
+        conn = make_conn()
+        cursor = conn.cursor()
+        # upsert on device table
+        sql_statement = f"INSERT INTO contact_tracer.device (device_id, first_sample, latest_sample) VALUES ('{device_id}', '{sample_date}', '{sample_date}') ON CONFLICT (device_id) DO UPDATE SET latest_sample = '{sample_date}' WHERE device.device_id='{device_id}'"
+        cursor.execute(sql_statement)
+        # device_data = cursor.fetchone()
+        # insert into device_location_table
+        point_str = f"'POINT({payload['longitude']} {payload['latitude']})'"
+        sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{device_id}', '{sample_date}', postgis.ST_PointFromText({point_str}))"
+        # device_location_data = cursor.fetchone()
+        cursor.execute(sql_statement)
+        conn.commit()
+        cursor.close()
+        response = {"statusCode": 200}
+    except psycopg2.DatabaseError as error:
+        response = {"statusCode": 500, "error": error}
+    finally:
+        if conn is not None:
+            conn.close()
     return response
 
 
