@@ -45,19 +45,21 @@ def postLocation(event, context):
         conn = make_conn()
         cursor = conn.cursor()
         # upsert on device table
-        sql_statement = f"INSERT INTO contact_tracer.device (device_id, first_sample, latest_sample) VALUES ('{device_id}', '{sample_date}', '{sample_date}') ON CONFLICT (device_id) DO UPDATE SET latest_sample = '{sample_date}' WHERE device.device_id='{device_id}'"
+        sql_statement = f"INSERT INTO contact_tracer.device (device_id, first_sample, latest_sample) VALUES ('{device_id}', '{sample_date}', '{sample_date}') ON CONFLICT (device_id) DO UPDATE SET latest_sample = '{sample_date}' WHERE device.device_id='{device_id}' RETURNING device_id, first_sample, latest_sample"
         cursor.execute(sql_statement)
-        # device_data = cursor.fetchone()
+        device_data = cursor.fetchone()
+        print(device_data)
         # insert into device_location_table
         point_str = f"'POINT({payload['longitude']} {payload['latitude']})'"
-        sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{device_id}', '{sample_date}', postgis.ST_PointFromText({point_str}))"
-        # device_location_data = cursor.fetchone()
+        sql_statement = f"INSERT INTO contact_tracer.device_location (device_id,sample_date,location) VALUES ('{device_id}', '{sample_date}', postgis.ST_MakePoint({payload['longitude']}, {payload['latitude']})) RETURNING device_id, sample_date, location"
         cursor.execute(sql_statement)
+        device_location_data = cursor.fetchone()
+        print(device_location_data)
         conn.commit()
         cursor.close()
         response = {"statusCode": 200}
     except psycopg2.DatabaseError as error:
-        response = {"statusCode": 500, "error": error}
+        response = {"statusCode": 500, "error": str(error)}
     finally:
         if conn is not None:
             conn.close()
