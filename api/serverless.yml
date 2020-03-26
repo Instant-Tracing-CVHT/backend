@@ -8,6 +8,7 @@ provider:
     DB_HOST: ${file(config/config.${self:provider.stage}.yaml):DB_HOST}
     DB_PORT: ${file(config/config.${self:provider.stage}.yaml):DB_PORT}
     DB_NAME: ${file(config/config.${self:provider.stage}.yaml):DB_NAME}
+    DB_SCHEMA: ${file(config/config.${self:provider.stage}.yaml):DB_SCHEMA}
     DB_USER: ${file(config/config.${self:provider.stage}.yaml):DB_USER}
     DB_PASS: ${file(config/config.${self:provider.stage}.yaml):DB_PASS}
 
@@ -38,7 +39,6 @@ functions:
     events:
       - schedule: rate(5 minutes)
 
-
 vpc:
   securityGroupIds:
     - sg-03b5282aa8bd76a92
@@ -56,6 +56,8 @@ package:
     - "*.py"
     - "json"
     - "psycopg2-binary"
+    - "requests"
+    - "i18n"
 
 plugins:
   - serverless-python-requirements
